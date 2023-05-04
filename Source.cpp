@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
 using namespace std;
+const int MAP_SIZE = 20;
 #include "AVL.h"
 #include "Dijkstra.h"
 #include "FLoyd.h"
@@ -9,6 +11,7 @@ using namespace std;
 #include "Kruskal.h"
 #include "Game.h"
 int main() {
+    srand(time(NULL));
     ifstream file("map.txt");
     if (!file.is_open()) {
         cout << "Cannot open file!!";
@@ -20,12 +23,7 @@ int main() {
         map[i] = row;
         i++;
     }
-    for (auto i : map)
-        cout << i << endl;
-
-
-
-    cout << "asdasda";
-
-
+    createAdjacencyMatrix(map);
+    //for (auto i : map)
+    //    cout << i << endl;
 }
