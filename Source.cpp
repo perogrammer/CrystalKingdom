@@ -22,4 +22,10 @@ int main() {
     }
     for (auto i : map)
         cout << i << endl;
+
+
+
+    cout << "asdasda";
+
+
 }
