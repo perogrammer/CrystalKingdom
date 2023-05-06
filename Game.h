@@ -30,40 +30,46 @@ public:
 int getLinearIndex(int i,int j) {
 	return i * MAP_SIZE + j;
 }
-void createAdjacencyMatrix(string* map) {
+AdjacencyList createAdjacencyMatrix(string* map) {
 	int adj[MAP_SIZE][MAP_SIZE]{0};
 	const int NUM_VERTICES = MAP_SIZE * MAP_SIZE;
 	AdjacencyList list(NUM_VERTICES);
+	bool isObstacle = false;
 	for (int i = 0; i < MAP_SIZE; i++) {
-		for (int j = 0; j < (MAP_SIZE * 2) - 2; j += 2) {
+		for (int j = 0; j < (MAP_SIZE * 2); j += 2) {
 			int linearIndex = getLinearIndex(i, j/2);
-			//forwards
-			if (map[i][j + 2] == '#')
-				list.addEdge(linearIndex, linearIndex + 1, 100);
-			else
-				list.addEdge(linearIndex, linearIndex + 1);
+			if (map[i][j] == '#')
+				isObstacle = true;
+			if (j < MAP_SIZE - 1) {
+				//forwards
+				if (map[i][j + 2] == '#'|| isObstacle)
+					list.addEdge(linearIndex, linearIndex + 1, 100);
+				else 
+					list.addEdge(linearIndex, linearIndex + 1);
+			}
 			//backwards
-			if (j != 0) {
-				if (map[i][j - 2] == '#')
+			if (j > 0) {
+				if (map[i][j - 2] == '#' || isObstacle)
 					list.addEdge(linearIndex, linearIndex - 1, 100);
 				else
 					list.addEdge(linearIndex, linearIndex - 1);
 			}
 			//upwards
 			if (linearIndex > MAP_SIZE - 1) {
-				if (map[i - 1][j] == '#')
+				if (map[i - 1][j] == '#' || isObstacle)
 					list.addEdge(linearIndex, linearIndex - MAP_SIZE, 100);
 				else
 					list.addEdge(linearIndex, linearIndex - MAP_SIZE);
 			}
 			//downwards
 			if (linearIndex < (MAP_SIZE) * (MAP_SIZE - 1) - 1) {
-				if (map[i + 1][j] == '#')
+				if (map[i + 1][j] == '#' || isObstacle)
 					list.addEdge(linearIndex, linearIndex + MAP_SIZE, 100);
 				else
 					list.addEdge(linearIndex, linearIndex + MAP_SIZE);
 			}
+			isObstacle = false;
 		}
 	}
-	list.print();
+	return list;
 }

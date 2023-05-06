@@ -23,7 +23,9 @@ int main() {
         map[i] = row;
         i++;
     }
-    createAdjacencyMatrix(map);
+    
+    AdjacencyList list = createAdjacencyMatrix(map);
+    list.print();
     //for (auto i : map)
     //    cout << i << endl;
 }
