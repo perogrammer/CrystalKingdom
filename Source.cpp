@@ -4,14 +4,11 @@
 #include <ctime>
 using namespace std;
 const int MAP_SIZE = 20;
-#include "AVL.h"
-#include "Dijkstra.h"
-#include "FLoyd.h"
-#include "Prim.h"
-#include "Kruskal.h"
+const int NUM_VERTICES = 400;
 #include "Game.h"
+#include "AVL.h"
 int main() {
-    srand(time(NULL));
+    //srand(time(NULL));
     ifstream file("map.txt");
     if (!file.is_open()) {
         cout << "Cannot open file!!";
@@ -23,9 +20,9 @@ int main() {
         map[i] = row;
         i++;
     }
-    
-    AdjacencyList list = createAdjacencyMatrix(map);
-    list.print();
+    Graph g(NUM_VERTICES);
+    g.createGraph(map);
+    g.create_MST_Prims();
     //for (auto i : map)
     //    cout << i << endl;
 }
