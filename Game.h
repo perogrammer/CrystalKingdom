@@ -4,14 +4,15 @@ struct Node {
 	Node* next;
 	Node(int v, int w, Node* n = nullptr) : vertex(v), weight(w), next(n) {}
 };
+
 class AdjacencyList {
 	
 	Node** adjList;
 	int numVertices;
+public:
 	int getLinearIndex(int i, int j) {
 		return i * MAP_SIZE + j;
 	}
-public:
 	AdjacencyList(int _numVertices) :numVertices(_numVertices), adjList(new Node* [_numVertices]) {
 		for (int i = 0; i < numVertices; i++)
 			adjList[i] = nullptr;
@@ -63,15 +64,17 @@ public:
 		adjList[u] = new Node(v, w, adjList[u]);
 	}
 	void print() const {
+		int numEdges = 0;
 		for (int i = 0; i < numVertices; i++)
 		{
 			cout << i << " : ";
-			for (Node* curr = adjList[i]; curr != nullptr; curr=curr->next)
+			for (Node* curr = adjList[i]; curr != nullptr; curr = curr->next, numEdges++)
 			{
-				cout << '(' << curr->vertex << ',' << curr->weight ;
+				cout << '(' << curr->vertex << ',' << curr->weight << ")->";
 			}
-			cout << "NULL\n";
+			cout <<"N"<< endl;
 		}
+		cout << "number of edges in spanning tree = " << numEdges;
 	}
 	//this function no works so no judge 
 	void printTree() {
@@ -82,9 +85,8 @@ public:
 				grid[i][j] = ' ';
 			}
 		}
-		for (int i = 0; i < MAP_SIZE*2; i++) {
+		for (int i = 0; i < MAP_SIZE*2; i+=2) {
 			for (int j = 0; j < (MAP_SIZE * 2); j +=2) {
-				if (i % 2 == 0 && j%2==0)
 					grid[i][j]='*';
 				int linearIndex = getLinearIndex(i, j / 2);
 				for (Node* curr = adjList[i]; curr != nullptr; curr = curr->next)
@@ -96,24 +98,24 @@ public:
 					}
 					//backwards
 					if (j > 0) {
-						if (curr->vertex == j)
+						if (curr->vertex == linearIndex-1)
 							grid[i][j - 1] = '-';
 					}
 					//upwards
 					if (linearIndex > MAP_SIZE - 1) {
-						if (curr->vertex == j)
+						if (curr->vertex == getLinearIndex((i-1)/2,j))
 							grid[i-1][j] = '|';
 					}
 					//downwards
 					if (linearIndex < (MAP_SIZE) * (MAP_SIZE - 1) - 1) {
-						if (curr->vertex == j)
+						if (curr->vertex == getLinearIndex((i + 1)/2, j))
 							grid[i+1][j] = '|';
 					}
 				}
 			}
 		}
 		for (int i = 0; i < MAP_SIZE*2; i++) {
-			for (int j = 0; j < (MAP_SIZE * 2); j += 2) {
+			for (int j = 0; j < (MAP_SIZE * 2); j ++) {
 				cout << grid[i][j];
 			}
 			cout << endl;
@@ -124,7 +126,7 @@ public:
 #include "FLoyd.h"
 #include "Prim.h"
 #include "Kruskal.h"
-class Graph : public Prims,Dijkstras{
+class Graph : public Prims, Dijkstras, Kruskals, Floyds {
 	AdjacencyList list;
 	AdjacencyList MST;
 public:
@@ -138,7 +140,14 @@ public:
 		MST = Prims::MST(list);
 		MST.print();
 	}
-	void create_MST_Dijkstras() {
-		MST = Dijkstras::MST(list);
+	void create_MST_Kruskals() {
+		MST = Kruskals::MST(list);
+		MST.print();
+	}
+	void find_shortest_Dijkstras(int source,int destination) {
+		Dijkstras::shortestPath(list,source, destination);
+	}
+	void find_shortest_Floyds(int source,int destination) {
+		Floyds::shortestPath(list,source, destination);
 	}
 };

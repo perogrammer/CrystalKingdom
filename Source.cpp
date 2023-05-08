@@ -20,9 +20,14 @@ int main() {
         map[i] = row;
         i++;
     }
+    int source = 0;
+    int destination = 116;
     Graph g(NUM_VERTICES);
     g.createGraph(map);
-    g.create_MST_Prims();
+    //g.create_MST_Prims();
+    //g.create_MST_Kruskals();
+    //g.find_shortest_Dijkstras(source,destination);
+    g.find_shortest_Floyds(source,destination);
     //for (auto i : map)
     //    cout << i << endl;
 }
