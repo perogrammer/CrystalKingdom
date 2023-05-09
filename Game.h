@@ -26,6 +26,7 @@ public:
 		for (int i = 0; i < MAP_SIZE; i++) {
 			for (int j = 0; j < (MAP_SIZE * 2); j += 2) {
 				int linearIndex = getLinearIndex(i, j / 2);
+				
 				if (map[i][j] == '#')
 					isObstacle = true;
 				if (j < 2*(MAP_SIZE - 1)) {
@@ -144,10 +145,10 @@ public:
 		MST = Kruskals::MST(list);
 		MST.print();
 	}
-	void find_shortest_Dijkstras(int source,int destination) {
-		Dijkstras::shortestPath(list,source, destination);
+	void find_shortest_Dijkstras(int source,int destination,string* map) {
+		Dijkstras::shortestPath(list, source, destination, map);
 	}
-	void find_shortest_Floyds(int source,int destination) {
-		Floyds::shortestPath(list,source, destination);
+	void find_shortest_Floyds(int source, int destination, string* map) {
+		Floyds::shortestPath(list, source, destination, map);
 	}
 };
