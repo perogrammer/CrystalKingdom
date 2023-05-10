@@ -4,7 +4,7 @@ public:
 		
 		int** distanceMatrix = new int*[NUM_VERTICES];
 		int** parent = new int*[NUM_VERTICES];
-
+		AVLTree inventory;
 
 		for (size_t i = 0; i < NUM_VERTICES; i++) {
 			distanceMatrix[i] = new int[NUM_VERTICES];
@@ -36,7 +36,7 @@ public:
 						distanceMatrix[i][j] = distanceMatrix[i][k] + distanceMatrix[k][j];
 						parent[i][j] = parent[k][j];
 					}
-		cout << "Shortest path from " << source << " to " << destination << ": ";
+		cout << "Shortest path from " << source << " to " << destination << " using Floyd's : \n";
 
 		string strpath = "";
 		
@@ -47,10 +47,32 @@ public:
 			path[i++] = curr;
 			int tempi = curr / MAP_SIZE;
 			int tempj = (curr % MAP_SIZE) * 2;
+			char entity = map[tempi][tempj];
+			int id = rand() % 201;
+			
 			strpath += map[tempi][tempj];
 			strpath += ">-";
 			curr = parent[source][curr];
+			//updating score
+			if (entity == 'J')
+				inventory.insert(id, 50);
+
+			else if (entity == 'P')
+				inventory.insert(id, 70);
+
+			else if (entity == 'W')
+				inventory.insert(id, 30);
+
+			else if (entity == '&')
+				inventory.insert(id, -50);
+
+			else if (entity == '$')
+				inventory.insert(id, -70);
+
+			else if (entity == '@')
+				inventory.insert(id, -30);
 		}
+		inventory.insert(101, 70);
 		int tempi = source / MAP_SIZE;
 		int tempj = (source % MAP_SIZE) * 2;
 		strpath += map[tempi][tempj];
@@ -58,11 +80,14 @@ public:
 		for (size_t j = strpath.length()-3 ; j < strpath.length(); j--) {
 			cout << strpath[j];
 		}
-		cout << endl;
+		cout << endl << endl;
 		cout << source;
 		for (size_t count = i; count > 0; count--)
 		{
 			cout << "->" << path[--i];
 		}
+		cout << endl << endl;
+		int total_score = inventory.calculateScore(inventory.root);
+		cout << "Total Score : " << total_score;
 	}
 };

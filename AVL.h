@@ -68,9 +68,15 @@ public:
         return node;
     }
     void insert(int id, int reward_score) {
+        
+        if (root == nullptr) {
+            root = insert(root,100, reward_score);
+            return;
+        }
         root = insert(root, id, reward_score);
     }
     Node* insert(Node*& node, int id, int reward_score) {
+       // cout << id << " ";
         if (node == nullptr) {
             return new Node(reward_score,id);
         }

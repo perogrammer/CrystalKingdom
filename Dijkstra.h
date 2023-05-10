@@ -114,39 +114,40 @@ public:
             int tempi = v / MAP_SIZE;
             char entity = map[tempi][tempj];
             int id = rand() % 201;
+
             strpath += entity;
             //updating score
             if (entity == 'J')
                 inventory.insert(id, 50);
 
             else if (entity == 'P')
-                inventory.insert(id, 30);
+                inventory.insert(id, 70);
 
             else if (entity == 'W')
-                inventory.insert(id, 70);
+                inventory.insert(id, 30);
 
             else if (entity == '&')
                 inventory.insert(id, -50);
 
             else if (entity == '$')
-                inventory.insert(id, -30);
+                inventory.insert(id, -70);
 
             else if (entity == '@')
-                inventory.insert(id, -70);
+                inventory.insert(id, -30);
 
             strpath += ">-";
         }
         for (size_t j = strpath.length() - 3; j < strpath.length(); j--) {
             cout << strpath[j];
         }
-        cout << endl;
+        cout << endl<<endl;
         cout << path[--i];
         for (size_t count = i; count > 0; count--)
         {
             cout << "->" << path[--i];
         }
-        cout << endl;
+        cout << endl<<endl;
         int total_score = inventory.calculateScore(inventory.root);
-        cout << "Total Score : " << total_score;
+        cout << "Total Score : " << total_score << endl;
 	}
 };
